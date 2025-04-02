@@ -25,12 +25,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.presentation.components.GameModeItem
+import com.github.ksalil.scribbledash.core.presentation.components.TitleWithDescription
 import com.github.ksalil.scribbledash.ui.theme.BottomNavBarItemUnselected
+import com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,7 +132,9 @@ fun HomeScreen(
         ) {
             Spacer(modifier = Modifier.height(64.dp))
             TitleWithDescription(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(R.string.home_title),
+                description = stringResource(R.string.home_title_description)
             )
             GameModeItem(
                 modifier = Modifier
@@ -142,26 +147,7 @@ fun HomeScreen(
     }
 }
 
-@Composable
-private fun TitleWithDescription(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(R.string.home_title),
-            style = MaterialTheme.typography.displayMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = stringResource(R.string.home_title_description),
-            style = MaterialTheme.typography.bodyMedium,
-            color = com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant,
-            textAlign = TextAlign.Center
-        )
-    }
-}
+
 
 @Preview(showBackground = true)
 @Composable
