@@ -9,4 +9,6 @@
     <string name="difficulty_level_beginner">Beginner</string>
     <string name="difficulty_level_challenging">Challenging</string>
     <string name="difficulty_level_master">Master</string>
+    <string name="draw_screen_title">Time to Draw!</string>
+    <string name="clear_canvas">CLEAR CANVAS</string>
 </resources>

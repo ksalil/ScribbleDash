@@ -1,4 +1,4 @@
-package com.github.ksalil.scribbledash.drawing.presentation
+package com.github.ksalil.scribbledash.game.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.presentation.components.TitleWithDescription
-import com.github.ksalil.scribbledash.drawing.DifficultyLevel
+import com.github.ksalil.scribbledash.game.DifficultyLevel
 import com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
 
