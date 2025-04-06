@@ -2,13 +2,19 @@ package com.github.ksalil.scribbledash.game.presentation
 
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.github.ksalil.scribbledash.core.Constants
 import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_COUNT
+import com.github.ksalil.scribbledash.core.extensions.clone
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
 import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DrawViewModel : ViewModel() {
@@ -28,48 +34,72 @@ class DrawViewModel : ViewModel() {
     }
 
     private fun onUndo() {
-        if (_state.value.undoStack.isEmpty()) return
+        val undoStack = _state.value.undoStack
+        if (undoStack.isEmpty()) return
 
-        val undoPathData = _state.value.undoStack.last()
-        _state.update {
-            it.copy(
-                pathDataList = it.pathDataList - undoPathData,
-                undoStack = it.undoStack.dropLast(1),
-                redoStack = it.redoStack + undoPathData
-            )
+        viewModelScope.launch(Dispatchers.Default) {
+            val newUndoStack = undoStack.clone()
+            val undoPathData = newUndoStack.removeLast()
+
+            val newRedoStack = _state.value.redoStack.clone()
+            newRedoStack.addLast(undoPathData)
+
+            withContext(Dispatchers.Main) {
+                _state.update {
+                    it.copy(
+                        pathDataList = it.pathDataList - undoPathData,
+                        undoStack = newUndoStack,
+                        redoStack = newRedoStack
+                    )
+                }
+            }
         }
+
     }
 
     private fun onRedo() {
-        if (_state.value.redoStack.isEmpty()) return
+        val redoStack = _state.value.redoStack
+        if (redoStack.isEmpty()) return
 
-        val redoPathData = _state.value.redoStack.last()
-        _state.update {
-            it.copy(
-                pathDataList = it.pathDataList + redoPathData,
-                undoStack = it.undoStack + redoPathData,
-                redoStack = it.redoStack.dropLast(1)
-            )
+        viewModelScope.launch(Dispatchers.Default) {
+            val newRedoStack = redoStack.clone()
+            val redoPathData = newRedoStack.removeLast()
+
+            val newUndoStack = _state.value.undoStack.clone()
+            newUndoStack.addLast(redoPathData)
+
+            withContext(Dispatchers.Main) {
+                _state.update {
+                    it.copy(
+                        pathDataList = it.pathDataList + redoPathData,
+                        undoStack = newUndoStack,
+                        redoStack = newRedoStack
+                    )
+                }
+            }
         }
     }
 
     private fun onPathEnd() {
         val currentPathData = _state.value.currentPathData ?: return
 
-        // Handle the undo paths list - drop oldest if at capacity
-        val updatedUndoStack = if (_state.value.undoStack.size == UNDO_REDO_COUNT) {
-            _state.value.undoStack.drop(1) + currentPathData
-        } else {
-            _state.value.undoStack + currentPathData
-        }
+        viewModelScope.launch(Dispatchers.Default) {
+            val newUndoStack = _state.value.undoStack.clone()
+            if (newUndoStack.size == UNDO_REDO_COUNT) {
+                newUndoStack.removeFirst()
+            }
+            newUndoStack.addLast(currentPathData)
 
-        _state.update {
-            it.copy(
-                currentPathData = null,
-                pathDataList = it.pathDataList + currentPathData,
-                undoStack = updatedUndoStack,
-                redoStack = emptyList()
-            )
+            withContext(Dispatchers.Main) {
+                _state.update {
+                    it.copy(
+                        currentPathData = null,
+                        pathDataList = it.pathDataList + currentPathData,
+                        undoStack = newUndoStack,
+                        redoStack = ArrayDeque(UNDO_REDO_COUNT)
+                    )
+                }
+            }
         }
     }
 
@@ -101,8 +131,8 @@ class DrawViewModel : ViewModel() {
             it.copy(
                 currentPathData = null,
                 pathDataList = emptyList(),
-                undoStack = emptyList(),
-                redoStack = emptyList()
+                undoStack = ArrayDeque(UNDO_REDO_COUNT),
+                redoStack = ArrayDeque(UNDO_REDO_COUNT)
             )
         }
     }

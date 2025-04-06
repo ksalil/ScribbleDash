@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
@@ -155,6 +156,9 @@ private fun DrawingCanvas(
         modifier = modifier
             .aspectRatio(1f)
             .background(color = Color.Transparent),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp
+        ),
         colors = CardDefaults.outlinedCardColors(),
         shape = RoundedCornerShape(24.dp)
     ) {
