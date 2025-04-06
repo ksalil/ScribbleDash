@@ -29,31 +29,27 @@ class DrawViewModel : ViewModel() {
     }
 
     private fun onUndo() {
-        if (_state.value.undoPaths.isEmpty()) return
-        val undoPathId = _state.value.undoPaths.last()
-        val undoPathData = _state.value.pathDataList.find {
-            it.id == undoPathId
-        } ?: return
+        if (_state.value.undoStack.isEmpty()) return
+
+        val undoPathData = _state.value.undoStack.last()
         _state.update {
             it.copy(
-                currentPathDataList = it.currentPathDataList - undoPathData,
-                undoPaths = it.undoPaths.dropLast(1),
-                redoPaths = it.redoPaths + undoPathId
+                pathDataList = it.pathDataList - undoPathData,
+                undoStack = it.undoStack.dropLast(1),
+                redoStack = it.redoStack + undoPathData
             )
         }
     }
 
     private fun onRedo() {
-        if (_state.value.redoPaths.isEmpty()) return
-        val redoPathId = _state.value.redoPaths.last()
-        val redoPathData = _state.value.pathDataList.find {
-            it.id == redoPathId
-        } ?: return
+        if (_state.value.redoStack.isEmpty()) return
+
+        val redoPathData = _state.value.redoStack.last()
         _state.update {
             it.copy(
-                currentPathDataList = it.currentPathDataList + redoPathData,
-                undoPaths = it.undoPaths + redoPathId,
-                redoPaths = it.redoPaths.dropLast(1)
+                pathDataList = it.pathDataList + redoPathData,
+                undoStack = it.undoStack + redoPathData,
+                redoStack = it.redoStack.dropLast(1)
             )
         }
     }
@@ -62,23 +58,22 @@ class DrawViewModel : ViewModel() {
         val currentPathData = _state.value.currentPathData ?: return
 
         // Handle the undo paths list - drop oldest if at capacity
-        val updatedUndoPaths = if (_state.value.undoPaths.size == UNDO_REDO_COUNT) {
-            _state.value.undoPaths.drop(1) + currentPathData.id
+        val updatedUndoStack = if (_state.value.undoStack.size == UNDO_REDO_COUNT) {
+            _state.value.undoStack.drop(1) + currentPathData
         } else {
-            _state.value.undoPaths + currentPathData.id
+            _state.value.undoStack + currentPathData
         }
 
         _state.update {
             it.copy(
                 currentPathData = null,
-                currentPathDataList = it.currentPathDataList + currentPathData,
                 pathDataList = it.pathDataList + currentPathData,
-                undoPaths = updatedUndoPaths,
-                redoPaths = emptyList()
+                undoStack = updatedUndoStack,
+                redoStack = emptyList()
             )
         }
 
-        Log.d("DrawViewModel", "onPathEnd Undo paths: ${_state.value.undoPaths}")
+        Log.d("DrawViewModel", "onPathEnd Undo paths: ${_state.value.undoStack}")
     }
 
     private fun onDraw(offset: Offset) {
@@ -108,10 +103,9 @@ class DrawViewModel : ViewModel() {
         _state.update {
             it.copy(
                 currentPathData = null,
-                currentPathDataList = emptyList(),
                 pathDataList = emptyList(),
-                undoPaths = emptyList(),
-                redoPaths = emptyList()
+                undoStack = emptyList(),
+                redoStack = emptyList()
             )
         }
     }

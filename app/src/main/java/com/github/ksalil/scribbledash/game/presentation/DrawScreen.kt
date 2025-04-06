@@ -122,7 +122,7 @@ fun DrawScreen(
                     ),
                 currentPath = state.currentPathData,
                 onAction = viewModel::onAction,
-                paths = state.currentPathDataList
+                paths = state.pathDataList
             )
             DrawingControls(
                 modifier = Modifier
@@ -238,7 +238,7 @@ private fun DrawingControls(
     ) {
         FilledIconButton(
             modifier = Modifier.size(64.dp),
-            enabled = state.undoPaths.isNotEmpty(),
+            enabled = state.undoStack.isNotEmpty(),
             colors = IconButtonDefaults.filledIconButtonColors(
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(
                     alpha = 0.4f
@@ -256,7 +256,7 @@ private fun DrawingControls(
         }
         FilledIconButton(
             modifier = Modifier.size(64.dp),
-            enabled = state.redoPaths.isNotEmpty(),
+            enabled = state.redoStack.isNotEmpty(),
             colors = IconButtonDefaults.iconButtonColors(
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(
                     alpha = 0.4f
@@ -273,7 +273,7 @@ private fun DrawingControls(
             )
         }
         ScribbleDashButton(
-            enabled = state.currentPathDataList.isNotEmpty(),
+            enabled = state.pathDataList.isNotEmpty(),
             onClick = onCanvasClearClick
         )
     }
