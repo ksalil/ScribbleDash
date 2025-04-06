@@ -1,6 +1,5 @@
 package com.github.ksalil.scribbledash.game.presentation
 
-import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_COUNT
@@ -72,8 +71,6 @@ class DrawViewModel : ViewModel() {
                 redoStack = emptyList()
             )
         }
-
-        Log.d("DrawViewModel", "onPathEnd Undo paths: ${_state.value.undoStack}")
     }
 
     private fun onDraw(offset: Offset) {
