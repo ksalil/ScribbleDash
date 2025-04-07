@@ -3,7 +3,7 @@ package com.github.ksalil.scribbledash.game.presentation
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_COUNT
+import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_CAPACITY
 import com.github.ksalil.scribbledash.core.extensions.clone
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
@@ -84,7 +84,7 @@ class DrawViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.Default) {
             val newUndoStack = _state.value.undoStack.clone()
-            if (newUndoStack.size == UNDO_REDO_COUNT) {
+            if (newUndoStack.size == UNDO_REDO_CAPACITY) {
                 newUndoStack.removeFirst()
             }
             newUndoStack.addLast(currentPathData)
@@ -95,7 +95,7 @@ class DrawViewModel : ViewModel() {
                         currentPathData = null,
                         pathDataList = it.pathDataList + currentPathData,
                         undoStack = newUndoStack,
-                        redoStack = ArrayDeque(UNDO_REDO_COUNT)
+                        redoStack = ArrayDeque(UNDO_REDO_CAPACITY)
                     )
                 }
             }
@@ -130,8 +130,8 @@ class DrawViewModel : ViewModel() {
             it.copy(
                 currentPathData = null,
                 pathDataList = emptyList(),
-                undoStack = ArrayDeque(UNDO_REDO_COUNT),
-                redoStack = ArrayDeque(UNDO_REDO_COUNT)
+                undoStack = ArrayDeque(UNDO_REDO_CAPACITY),
+                redoStack = ArrayDeque(UNDO_REDO_CAPACITY)
             )
         }
     }
