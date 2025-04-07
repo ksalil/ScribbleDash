@@ -13,6 +13,7 @@ hilt-navigation-compose = "1.2.0"
 navigation = "2.8.9"
 kotlinx-serialization = "1.7.0"
 ksp = "2.0.21-1.0.28"
+googleFonts = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,8 @@ navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-run
 navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigation" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+google-fonts = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "googleFonts"}
 
 [bundles]
 hilt = ["hilt", "hilt-android-compiler", "hilt-navigation-compose"]

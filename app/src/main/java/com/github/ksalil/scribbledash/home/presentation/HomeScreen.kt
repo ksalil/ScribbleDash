@@ -17,6 +17,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,15 +26,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.presentation.components.GameModeItem
 import com.github.ksalil.scribbledash.core.presentation.components.TitleWithDescription
-import com.github.ksalil.scribbledash.ui.theme.BottomNavBarItemUnselected
-import com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant
+import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
+import com.github.ksalil.scribbledash.ui.theme.BottomNavBarItemUnselectedColor
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,35 +48,18 @@ fun HomeScreen(
                     Text(
                         text = stringResource(R.string.scribble_dash),
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.onBackground
                     )
                 },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground
+                )
             )
         },
         bottomBar = {
             NavigationBar(
                 containerColor = Color.White
             ) {
-                /* bottomNavItems.forEach { item ->
-                     NavigationBarItem(
-                         selected = false,
-                         onClick = { *//*TODO*//* },
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = item.iconResId),
-                                contentDescription = item.contentDescription
-                            )
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = Color.Transparent,
-                            unselectedIconColor = BottomNavBarItemUnselected.copy(
-                                alpha = 0.4f
-                            ),
-                            selectedIconColor = MaterialTheme.colorScheme.primary
-                        )
-                    )
-                }*/
-
                 NavigationBarItem(
                     selected = false,
                     onClick = { },
@@ -89,7 +71,7 @@ fun HomeScreen(
                     },
                     colors = NavigationBarItemDefaults.colors(
                         indicatorColor = Color.Transparent,
-                        unselectedIconColor = BottomNavBarItemUnselected.copy(
+                        unselectedIconColor = BottomNavBarItemUnselectedColor.copy(
                             alpha = 0.4f
                         ),
                         selectedIconColor = MaterialTheme.colorScheme.primary
@@ -106,7 +88,7 @@ fun HomeScreen(
                     },
                     colors = NavigationBarItemDefaults.colors(
                         indicatorColor = Color.Transparent,
-                        unselectedIconColor = BottomNavBarItemUnselected.copy(
+                        unselectedIconColor = BottomNavBarItemUnselectedColor.copy(
                             alpha = 0.4f
                         ),
                         selectedIconColor = MaterialTheme.colorScheme.primary
@@ -122,7 +104,7 @@ fun HomeScreen(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.background,
-                            Color(0xFFFFF1E2),
+                            BackgroundGradientEnd,
                         )
                     )
                 )

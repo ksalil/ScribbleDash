@@ -64,7 +64,7 @@ dependencies {
 
     implementation(libs.bundles.navigation)
     implementation(libs.kotlinx.serialization.json)
-
+    implementation(libs.google.fonts)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

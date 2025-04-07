@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.presentation.components.TitleWithDescription
 import com.github.ksalil.scribbledash.game.DifficultyLevel
+import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
 import com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
 
@@ -58,7 +60,11 @@ fun ChooseDifficultyScreen(
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground
+                )
             )
         }
     ) { innerPadding ->
@@ -69,7 +75,7 @@ fun ChooseDifficultyScreen(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.background,
-                            Color(0xFFFFF1E2),
+                            BackgroundGradientEnd,
                         )
                     )
                 )
@@ -136,12 +142,11 @@ fun DifficultyLevel(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        Spacer(modifier = Modifier.padding(8.dp))
         Text(
             text = title,
             style = MaterialTheme.typography.labelMedium,
             color = OnBackgroundVariant,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.github.ksalil.scribbledash.game.presentation
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,29 +12,24 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -59,20 +53,22 @@ import androidx.compose.ui.util.fastForEach
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.ksalil.scribbledash.R
+import com.github.ksalil.scribbledash.core.Constants.CANVAS_SIZE
+import com.github.ksalil.scribbledash.core.presentation.components.ScribbleDashButton
 import com.github.ksalil.scribbledash.game.DifficultyLevel
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
 import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
+import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
-import com.github.ksalil.scribbledash.ui.theme.Success
 import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawScreen(
-    modifier: Modifier = Modifier,
+    viewModel: DrawViewModel = viewModel<DrawViewModel>(),
     difficultyLevel: DifficultyLevel,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -88,7 +84,11 @@ fun DrawScreen(
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground
+                )
             )
         }
     ) { innerPadding ->
@@ -99,7 +99,7 @@ fun DrawScreen(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.background,
-                            Color(0xFFFFF1E2),
+                            BackgroundGradientEnd,
                         )
                     )
                 )
@@ -107,7 +107,6 @@ fun DrawScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            val viewModel = viewModel<DrawViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
             Text(
                 text = stringResource(R.string.draw_screen_title),
@@ -116,10 +115,13 @@ fun DrawScreen(
             )
             DrawingCanvas(
                 modifier = Modifier
-                    .width(360.dp)
-                    .height(360.dp)
+                    .size(CANVAS_SIZE.dp)
+                    .aspectRatio(1f)
+                    .clip(
+                        shape = RoundedCornerShape(32.dp)
+                    )
                     .background(
-                        color = MaterialTheme.colorScheme.background
+                        color = Color.White
                     ),
                 currentPath = state.currentPathData,
                 onAction = viewModel::onAction,
@@ -152,75 +154,70 @@ private fun DrawingCanvas(
     modifier: Modifier = Modifier
 ) {
     val gridImage = painterResource(id = R.drawable.ic_grid)
-    ElevatedCard(
-        modifier = modifier
-            .aspectRatio(1f)
-            .background(color = Color.Transparent),
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 4.dp
-        ),
-        colors = CardDefaults.outlinedCardColors(),
-        shape = RoundedCornerShape(24.dp)
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
-                .padding(16.dp),
+                .padding(12.dp)
+                .border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(24.dp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                        .copy(
+                            alpha = 0.1f
+                        )
+                ),
             contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .width(330.dp)
-                    .height(330.dp)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                            .copy(
-                                alpha = 0.2f
-                            ),
-                        shape = RoundedCornerShape(16.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Canvas(
-                    modifier = modifier
-                        .background(color = Color.White)
-                        .drawBehind {
-                            with(gridImage) {
-                                draw(
-                                    size = Size(size.width, size.height)
-                                )
-                            }
-                        }
-                        .clipToBounds()
-                        .pointerInput(true) {
-                            detectDragGestures(
-                                onDragStart = {
-                                    onAction(DrawingAction.OnNewPathStart)
-                                },
-                                onDrag = { change, _ ->
-                                    onAction(DrawingAction.OnDraw(change.position))
-                                },
-                                onDragEnd = {
-                                    onAction(DrawingAction.OnPathEnd)
-                                },
-                                onDragCancel = {
-                                    onAction(DrawingAction.OnPathEnd)
-                                }
+            Canvas(
+                modifier = modifier
+                    .background(color = Color.White)
+                    .drawBehind {
+                        with(gridImage) {
+                            draw(
+                                size = Size(size.width, size.height)
                             )
                         }
-                ) {
-                    paths.fastForEach { pathData ->
-                        drawPath(
-                            path = pathData.paths,
-                            color = pathData.color,
+                    }
+                    .clipToBounds()
+                    .pointerInput(key1 = true) {
+                        detectDragGestures(
+                            onDragStart = {
+                                onAction(DrawingAction.OnNewPathStart)
+                            },
+                            onDrag = { change, _ ->
+                                onAction(DrawingAction.OnDraw(change.position))
+                            },
+                            onDragEnd = {
+                                onAction(DrawingAction.OnPathEnd)
+                            },
+                            onDragCancel = {
+                                onAction(DrawingAction.OnPathEnd)
+                            }
                         )
                     }
-                    currentPath?.let {
-                        drawPath(
-                            path = it.paths,
-                            color = it.color
-                        )
-                    }
+            ) {
+                paths.fastForEach { pathData ->
+                    drawPath(
+                        thickness = pathData.thickness,
+                        smoothness = pathData.smoothness,
+                        strokeCap = pathData.strokeCap,
+                        strokeJoin = pathData.strokeJoin,
+                        color = pathData.color,
+                        path = pathData.paths,
+                    )
+                }
+                currentPath?.let {
+                    drawPath(
+                        thickness = it.thickness,
+                        smoothness = it.smoothness,
+                        strokeCap = it.strokeCap,
+                        strokeJoin = it.strokeJoin,
+                        color = it.color,
+                        path = it.paths
+                    )
                 }
             }
         }
@@ -277,40 +274,9 @@ private fun DrawingControls(
             )
         }
         ScribbleDashButton(
+            text = stringResource(R.string.clear_canvas),
             enabled = state.pathDataList.isNotEmpty(),
             onClick = onCanvasClearClick
-        )
-    }
-}
-
-@Composable
-fun ScribbleDashButton(
-    modifier: Modifier = Modifier,
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    OutlinedButton(
-        modifier = modifier,
-        enabled = enabled,
-        onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(
-            width = 4.dp,
-            color = Color.White
-        ),
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = Success,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest
-        )
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            text = stringResource(R.string.clear_canvas),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onPrimary.copy(
-                alpha = 0.8f
-            )
         )
     }
 }
@@ -318,13 +284,15 @@ fun ScribbleDashButton(
 private fun DrawScope.drawPath(
     path: List<Offset>,
     color: Color,
-    thickness: Float = 10f
+    thickness: Float,
+    smoothness: Int,
+    strokeCap: StrokeCap,
+    strokeJoin: StrokeJoin
 ) {
     val smoothedPath = Path().apply {
         if (path.isNotEmpty()) {
             moveTo(path.first().x, path.first().y)
 
-            val smoothness = 5
             for (i in 1..path.lastIndex) {
                 val from = path[i - 1]
                 val to = path[i]
@@ -346,8 +314,8 @@ private fun DrawScope.drawPath(
         color = color,
         style = Stroke(
             width = thickness,
-            cap = StrokeCap.Round,
-            join = StrokeJoin.Round
+            cap = strokeCap,
+            join = strokeJoin
         )
     )
 }

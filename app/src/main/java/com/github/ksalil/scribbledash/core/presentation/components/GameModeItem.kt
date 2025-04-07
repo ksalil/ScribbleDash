@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
-import com.github.ksalil.scribbledash.ui.theme.GameModeItemBorder
+import com.github.ksalil.scribbledash.ui.theme.GameModeItemBorderColor
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
 
 @Composable
@@ -33,7 +33,7 @@ fun GameModeItem(
         modifier = modifier
             .border(
                 width = 8.dp,
-                color = GameModeItemBorder,
+                color = GameModeItemBorderColor,
                 shape = RoundedCornerShape(16.dp)
             )
             .background(
