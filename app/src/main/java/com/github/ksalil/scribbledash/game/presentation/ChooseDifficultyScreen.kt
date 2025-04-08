@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +25,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,6 +39,7 @@ import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.presentation.components.TitleWithDescription
 import com.github.ksalil.scribbledash.game.DifficultyLevel
 import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
+import com.github.ksalil.scribbledash.ui.theme.BottomNavBarItemUnselectedColor
 import com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
 
@@ -96,6 +100,7 @@ fun ChooseDifficultyScreen(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 DifficultyLevel(
+                    modifier = Modifier.weight(0.33f),
                     title = stringResource(R.string.difficulty_level_beginner),
                     imageResourceId = R.drawable.ic_beginner,
                     onDifficultyLevelClicked = {
@@ -103,7 +108,9 @@ fun ChooseDifficultyScreen(
                     }
                 )
                 DifficultyLevel(
-                    modifier = Modifier.padding(bottom = 32.dp),
+                    modifier = Modifier
+                        .padding(bottom = 32.dp)
+                        .weight(0.33f),
                     title = stringResource(R.string.difficulty_level_challenging),
                     imageResourceId = R.drawable.ic_challenging,
                     onDifficultyLevelClicked = {
@@ -111,6 +118,7 @@ fun ChooseDifficultyScreen(
                     }
                 )
                 DifficultyLevel(
+                    modifier = Modifier.weight(0.33f),
                     title = stringResource(R.string.difficulty_level_master),
                     imageResourceId = R.drawable.ic_master,
                     onDifficultyLevelClicked = {
@@ -127,7 +135,7 @@ fun DifficultyLevel(
     modifier: Modifier = Modifier,
     title: String,
     imageResourceId: Int,
-    onDifficultyLevelClicked:() -> Unit
+    onDifficultyLevelClicked: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -137,11 +145,27 @@ fun DifficultyLevel(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Image(
-            imageVector = ImageVector.vectorResource(id = imageResourceId),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            // Shadow box behind the white circle
+            Box(
+                modifier = Modifier
+                    .size(88.dp)
+                    .shadow(
+                        elevation = 16.dp,
+                        shape = CircleShape,
+                        spotColor = BottomNavBarItemUnselectedColor.copy(alpha = 0.75f),
+                        ambientColor = BottomNavBarItemUnselectedColor.copy(alpha = 0.75f)
+                    )
+                    .background(Color.Transparent)
+            )
+            Image(
+                imageVector = ImageVector.vectorResource(id = imageResourceId),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        }
         Text(
             text = title,
             style = MaterialTheme.typography.labelMedium,

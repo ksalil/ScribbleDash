@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -60,6 +61,7 @@ import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
 import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
 import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
+import com.github.ksalil.scribbledash.ui.theme.ShadowColor
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.abs
 
@@ -154,74 +156,89 @@ private fun DrawingCanvas(
     modifier: Modifier = Modifier
 ) {
     val gridImage = painterResource(id = R.drawable.ic_grid)
+
     Box(
-        modifier = modifier,
+        modifier = Modifier
+            .size(CANVAS_SIZE.dp + 8.dp)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(36.dp), // Slightly larger corner radius
+                spotColor = ShadowColor.copy(alpha = 0.75f),
+                ambientColor = ShadowColor.copy(alpha = 0.75f)
+            ),
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
-                .padding(12.dp)
-                .border(
-                    width = 1.dp,
-                    shape = RoundedCornerShape(24.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(
-                            alpha = 0.1f
-                        )
-                ),
+            modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
-            Canvas(
-                modifier = modifier
-                    .background(color = Color.White)
-                    .drawBehind {
-                        with(gridImage) {
-                            draw(
-                                size = Size(size.width, size.height)
+            Box(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .border(
+                        width = 1.dp,
+                        shape = RoundedCornerShape(24.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                            .copy(
+                                alpha = 0.1f
+                            )
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Canvas(
+                    modifier = modifier
+                        .background(color = Color.White)
+                        .drawBehind {
+                            with(gridImage) {
+                                draw(
+                                    size = Size(size.width, size.height)
+                                )
+                            }
+                        }
+                        .clipToBounds()
+                        .pointerInput(key1 = true) {
+                            detectDragGestures(
+                                onDragStart = {
+                                    onAction(DrawingAction.OnNewPathStart)
+                                },
+                                onDrag = { change, _ ->
+                                    onAction(DrawingAction.OnDraw(change.position))
+                                },
+                                onDragEnd = {
+                                    onAction(DrawingAction.OnPathEnd)
+                                },
+                                onDragCancel = {
+                                    onAction(DrawingAction.OnPathEnd)
+                                }
                             )
                         }
-                    }
-                    .clipToBounds()
-                    .pointerInput(key1 = true) {
-                        detectDragGestures(
-                            onDragStart = {
-                                onAction(DrawingAction.OnNewPathStart)
-                            },
-                            onDrag = { change, _ ->
-                                onAction(DrawingAction.OnDraw(change.position))
-                            },
-                            onDragEnd = {
-                                onAction(DrawingAction.OnPathEnd)
-                            },
-                            onDragCancel = {
-                                onAction(DrawingAction.OnPathEnd)
-                            }
+                ) {
+                    paths.fastForEach { pathData ->
+                        drawPath(
+                            thickness = pathData.thickness,
+                            smoothness = pathData.smoothness,
+                            strokeCap = pathData.strokeCap,
+                            strokeJoin = pathData.strokeJoin,
+                            color = pathData.color,
+                            path = pathData.paths,
                         )
                     }
-            ) {
-                paths.fastForEach { pathData ->
-                    drawPath(
-                        thickness = pathData.thickness,
-                        smoothness = pathData.smoothness,
-                        strokeCap = pathData.strokeCap,
-                        strokeJoin = pathData.strokeJoin,
-                        color = pathData.color,
-                        path = pathData.paths,
-                    )
-                }
-                currentPath?.let {
-                    drawPath(
-                        thickness = it.thickness,
-                        smoothness = it.smoothness,
-                        strokeCap = it.strokeCap,
-                        strokeJoin = it.strokeJoin,
-                        color = it.color,
-                        path = it.paths
-                    )
+                    currentPath?.let {
+                        drawPath(
+                            thickness = it.thickness,
+                            smoothness = it.smoothness,
+                            strokeCap = it.strokeCap,
+                            strokeJoin = it.strokeJoin,
+                            color = it.color,
+                            path = it.paths
+                        )
+                    }
                 }
             }
         }
     }
+
+
 }
 
 @Composable
