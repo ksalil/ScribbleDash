@@ -51,7 +51,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.Constants.CANVAS_SIZE
 import com.github.ksalil.scribbledash.core.presentation.components.ScribbleDashButton
@@ -61,12 +60,13 @@ import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
 import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
 import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
 import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawScreen(
-    viewModel: DrawViewModel = viewModel<DrawViewModel>(),
+    viewModel: DrawViewModel = koinViewModel(),
     difficultyLevel: DifficultyLevel,
     onCloseClicked: () -> Unit,
 ) {

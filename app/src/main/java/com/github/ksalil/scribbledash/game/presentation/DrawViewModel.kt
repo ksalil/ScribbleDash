@@ -4,6 +4,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_CAPACITY
+import com.github.ksalil.scribbledash.core.DefaultDispatcherProvider
+import com.github.ksalil.scribbledash.core.DispatcherProvider
 import com.github.ksalil.scribbledash.core.extensions.clone
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
@@ -16,7 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class DrawViewModel : ViewModel() {
+class DrawViewModel(
+    private val dispatchers: DispatcherProvider = DefaultDispatcherProvider()
+) : ViewModel() {
 
     private val _state = MutableStateFlow(DrawingState())
     val state = _state.asStateFlow()
@@ -36,7 +40,7 @@ class DrawViewModel : ViewModel() {
         val undoStack = _state.value.undoStack
         if (undoStack.isEmpty()) return
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(dispatchers.default) {
             val newUndoStack = undoStack.clone()
             val undoPathData = newUndoStack.removeLast()
 
@@ -53,14 +57,13 @@ class DrawViewModel : ViewModel() {
                 }
             }
         }
-
     }
 
     private fun onRedo() {
         val redoStack = _state.value.redoStack
         if (redoStack.isEmpty()) return
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(dispatchers.default) {
             val newRedoStack = redoStack.clone()
             val redoPathData = newRedoStack.removeLast()
 
@@ -82,7 +85,7 @@ class DrawViewModel : ViewModel() {
     private fun onPathEnd() {
         val currentPathData = _state.value.currentPathData ?: return
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(dispatchers.default) {
             val newUndoStack = _state.value.undoStack.clone()
             if (newUndoStack.size == UNDO_REDO_CAPACITY) {
                 newUndoStack.removeFirst()

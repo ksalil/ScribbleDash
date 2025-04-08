@@ -14,6 +14,7 @@ navigation = "2.8.9"
 kotlinx-serialization = "1.7.0"
 ksp = "2.0.21-1.0.28"
 googleFonts = "1.7.8"
+koinBom = "4.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,11 +39,6 @@ lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycleRuntimeKtx" }
 
-#hilt
-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
-
 #navigation
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
@@ -50,20 +46,28 @@ navigation-common-ktx = { group = "androidx.navigation", name = "navigation-comm
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
-google-fonts = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "googleFonts"}
+google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "googleFonts" }
+
+#Koin
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koinBom" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinBom" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinBom" }
+koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koinBom" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koinBom" }
+koin-android-test = { group = "io.insert-koin", name = "koin-android-test", version.ref = "koinBom" }
 
 [bundles]
-hilt = ["hilt", "hilt-android-compiler", "hilt-navigation-compose"]
 #navigation = ["navigation-compose", "navigation-runtime-ktx", "navigation-common-ktx"]
 navigation = ["navigation-compose"]
 lifecycle = ["androidx-lifecycle-runtime-ktx", "lifecycle-runtime-compose", "lifecycle-viewmodel-compose", "lifecycle-viewmodel-ktx", "lifecycle-viewmodel-savedstate"]
-
+koin = ["koin-core", "koin-android", "koin-compose", "koin-compose-navigation"]
+koin-test = ["koin-test", "koin-android-test"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
