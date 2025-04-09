@@ -26,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -94,57 +93,69 @@ fun DrawScreen(
             )
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            MaterialTheme.colorScheme.background,
-                            BackgroundGradientEnd,
-                        )
+        val state = viewModel.state.collectAsStateWithLifecycle()
+        DrawScreenContent(
+            modifier = Modifier.padding(innerPadding),
+            state = state.value,
+            onDrawingAction = viewModel::onAction
+        )
+    }
+}
+
+@Composable
+fun DrawScreenContent(
+    modifier: Modifier = Modifier,
+    state: DrawingState,
+    onDrawingAction: (DrawingAction) -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.background,
+                        BackgroundGradientEnd,
                     )
                 )
-                .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            Text(
-                text = stringResource(R.string.draw_screen_title),
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            DrawingCanvas(
-                modifier = Modifier
-                    .size(CANVAS_SIZE.dp)
-                    .aspectRatio(1f)
-                    .clip(
-                        shape = RoundedCornerShape(32.dp)
-                    )
-                    .background(
-                        color = Color.White
-                    ),
-                currentPath = state.currentPathData,
-                onAction = viewModel::onAction,
-                paths = state.pathDataList
-            )
-            DrawingControls(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 24.dp, horizontal = 24.dp),
-                state = state,
-                onRedoClick = {
-                    viewModel.onAction(action = DrawingAction.OnRedo)
-                },
-                onUndoClick = {
-                    viewModel.onAction(action = DrawingAction.OnUndo)
-                },
-                onCanvasClearClick = {
-                    viewModel.onAction(action = DrawingAction.OnClearCanvasClick)
-                }
-            )
-        }
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(R.string.draw_screen_title),
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        DrawingCanvas(
+            modifier = Modifier
+                .size(CANVAS_SIZE.dp)
+                .aspectRatio(1f)
+                .clip(
+                    shape = RoundedCornerShape(32.dp)
+                )
+                .background(
+                    color = Color.White
+                ),
+            currentPath = state.currentPathData,
+            onAction = onDrawingAction,
+            paths = state.pathDataList
+        )
+        DrawingControls(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 24.dp, horizontal = 24.dp),
+            state = state,
+            onRedoClick = {
+                onDrawingAction(DrawingAction.OnRedo)
+            },
+            onUndoClick = {
+                onDrawingAction(DrawingAction.OnUndo)
+            },
+            onCanvasClearClick = {
+                onDrawingAction(DrawingAction.OnClearCanvasClick)
+            }
+        )
     }
 }
 
@@ -339,11 +350,11 @@ private fun DrawScope.drawPath(
 
 @Preview(showBackground = true)
 @Composable
-private fun DrawScreenPreview() {
+private fun DrawScreenContentPreview() {
     ScribbleDashTheme {
-        DrawScreen(
-            difficultyLevel = DifficultyLevel.BEGINNER,
-            onCloseClicked = {}
+        DrawScreenContent(
+            state = DrawingState(),
+            onDrawingAction = {}
         )
     }
 }

@@ -34,9 +34,9 @@ fun AppNavigation(
         composable<DifficultyLevelDestination> {
             ChooseDifficultyScreen(
                 onCloseClicked = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
-                onDifficultyLevelSelected = { level->
+                onDifficultyLevelSelected = { level ->
                     navController.navigate(DrawScreenDestination(level))
                 }
             )
@@ -44,9 +44,9 @@ fun AppNavigation(
         composable<DrawScreenDestination> { navBackStackEntry ->
             val level = navBackStackEntry.toRoute<DrawScreenDestination>().difficultyLevel
             DrawScreen(
-                difficultyLevel = level ,
+                difficultyLevel = level,
                 onCloseClicked = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }

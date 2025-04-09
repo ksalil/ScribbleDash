@@ -17,10 +17,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,7 +52,7 @@ fun ChooseDifficultyScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            LargeTopAppBar(
                 title = {},
                 actions = {
                     IconButton(
@@ -65,7 +65,7 @@ fun ChooseDifficultyScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color.Transparent,
                     titleContentColor = MaterialTheme.colorScheme.onBackground
                 )
@@ -84,7 +84,7 @@ fun ChooseDifficultyScreen(
                     )
                 )
                 .padding(innerPadding),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TitleWithDescription(
@@ -148,7 +148,7 @@ fun DifficultyLevel(
         Box(
             contentAlignment = Alignment.Center
         ) {
-            // Shadow box behind the white circle
+            // Shadow box behind the image
             Box(
                 modifier = Modifier
                     .size(88.dp)
