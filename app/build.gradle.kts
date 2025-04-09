@@ -63,6 +63,7 @@ dependencies {
 
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -73,4 +74,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     testImplementation(libs.bundles.koin.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

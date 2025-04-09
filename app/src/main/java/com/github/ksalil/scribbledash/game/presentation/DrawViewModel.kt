@@ -10,7 +10,6 @@ import com.github.ksalil.scribbledash.core.extensions.clone
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
 import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -47,7 +46,7 @@ class DrawViewModel(
             val newRedoStack = _state.value.redoStack.clone()
             newRedoStack.addLast(undoPathData)
 
-            withContext(Dispatchers.Main) {
+            withContext(dispatchers.main) {
                 _state.update {
                     it.copy(
                         pathDataList = it.pathDataList - undoPathData,
@@ -70,7 +69,7 @@ class DrawViewModel(
             val newUndoStack = _state.value.undoStack.clone()
             newUndoStack.addLast(redoPathData)
 
-            withContext(Dispatchers.Main) {
+            withContext(dispatchers.main) {
                 _state.update {
                     it.copy(
                         pathDataList = it.pathDataList + redoPathData,
@@ -92,7 +91,7 @@ class DrawViewModel(
             }
             newUndoStack.addLast(currentPathData)
 
-            withContext(Dispatchers.Main) {
+            withContext(dispatchers.main) {
                 _state.update {
                     it.copy(
                         currentPathData = null,
@@ -139,3 +138,4 @@ class DrawViewModel(
         }
     }
 }
+
