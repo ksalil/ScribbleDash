@@ -54,13 +54,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.Constants.CANVAS_SIZE
 import com.github.ksalil.scribbledash.core.presentation.components.ScribbleDashButton
-import com.github.ksalil.scribbledash.game.DifficultyLevel
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.BackgroundGradientEnd
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.ScribbleDashTheme
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.ShadowColor
+import com.github.ksalil.scribbledash.game.domain.DifficultyLevel
+import com.github.ksalil.scribbledash.game.presentation.model.PathData
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
-import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
-import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
-import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
-import com.github.ksalil.scribbledash.ui.theme.ShadowColor
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.abs
 

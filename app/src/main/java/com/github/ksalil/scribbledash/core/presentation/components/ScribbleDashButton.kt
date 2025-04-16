@@ -17,9 +17,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
-import com.github.ksalil.scribbledash.ui.theme.ShadowColor
-import com.github.ksalil.scribbledash.ui.theme.Success
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.ScribbleDashTheme
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.ShadowColor
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.Success
 
 @Composable
 fun ScribbleDashButton(

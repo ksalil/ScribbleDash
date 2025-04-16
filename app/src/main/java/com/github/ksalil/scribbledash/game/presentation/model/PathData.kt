@@ -1,4 +1,4 @@
-package com.github.ksalil.scribbledash.game.presentation.mvi
+package com.github.ksalil.scribbledash.game.presentation.model
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
