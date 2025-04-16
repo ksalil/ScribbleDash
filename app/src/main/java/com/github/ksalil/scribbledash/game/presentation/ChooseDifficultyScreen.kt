@@ -37,11 +37,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
 import com.github.ksalil.scribbledash.core.presentation.components.TitleWithDescription
-import com.github.ksalil.scribbledash.game.DifficultyLevel
-import com.github.ksalil.scribbledash.ui.theme.BackgroundGradientEnd
-import com.github.ksalil.scribbledash.ui.theme.BottomNavBarItemUnselectedColor
-import com.github.ksalil.scribbledash.ui.theme.OnBackgroundVariant
-import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.BackgroundGradientEnd
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.BottomNavBarItemUnselectedColor
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.OnBackgroundVariant
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.ScribbleDashTheme
+import com.github.ksalil.scribbledash.game.domain.DifficultyLevel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

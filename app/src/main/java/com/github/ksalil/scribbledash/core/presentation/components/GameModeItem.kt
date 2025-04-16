@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.ksalil.scribbledash.R
-import com.github.ksalil.scribbledash.ui.theme.GameModeItemBorderColor
-import com.github.ksalil.scribbledash.ui.theme.ScribbleDashTheme
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.GameModeItemBorderColor
+import com.github.ksalil.scribbledash.core.presentation.ui.theme.ScribbleDashTheme
 
 @Composable
 fun GameModeItem(

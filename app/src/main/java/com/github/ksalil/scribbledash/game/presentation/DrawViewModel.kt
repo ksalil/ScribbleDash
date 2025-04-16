@@ -7,9 +7,9 @@ import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_CAPACITY
 import com.github.ksalil.scribbledash.core.DefaultDispatcherProvider
 import com.github.ksalil.scribbledash.core.DispatcherProvider
 import com.github.ksalil.scribbledash.core.extensions.clone
+import com.github.ksalil.scribbledash.game.presentation.model.PathData
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingAction
 import com.github.ksalil.scribbledash.game.presentation.mvi.DrawingState
-import com.github.ksalil.scribbledash.game.presentation.mvi.PathData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

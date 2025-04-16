@@ -1,4 +1,4 @@
-package com.github.ksalil.scribbledash.ui.theme
+package com.github.ksalil.scribbledash.core.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

@@ -2,6 +2,7 @@ package com.github.ksalil.scribbledash.game.presentation.mvi
 
 import androidx.compose.ui.graphics.Color
 import com.github.ksalil.scribbledash.core.Constants.UNDO_REDO_CAPACITY
+import com.github.ksalil.scribbledash.game.presentation.model.PathData
 
 data class DrawingState(
     val selectedColor: Color = Color.Black,

@@ -1,4 +1,4 @@
-package com.github.ksalil.scribbledash.game
+package com.github.ksalil.scribbledash.game.domain
 
 import kotlinx.serialization.Serializable
 
