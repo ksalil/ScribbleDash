@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ScribbleDash</string>
+    <string name="scribble_dash">Scribble Dash</string>
+    <string name="home_title">Start drawing!</string>
+    <string name="difficulty_level_title">Start drawing!</string>
+    <string name="home_title_description">Select game mode</string>
+    <string name="difficult_level_description">Choose a difficulty level</string>
+    <string name="game_mode_one_round_wonder">One Round Wonder</string>
+    <string name="difficulty_level_beginner">Beginner</string>
+    <string name="difficulty_level_challenging">Challenging</string>
+    <string name="difficulty_level_master">Master</string>
+    <string name="draw_screen_title">Time to Draw!</string>
+    <string name="clear_canvas">CLEAR CANVAS</string>
 </resources>

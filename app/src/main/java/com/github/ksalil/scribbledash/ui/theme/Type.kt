@@ -2,20 +2,45 @@ package com.github.ksalil.scribbledash.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
 import com.github.ksalil.scribbledash.R
 
+val provider = GoogleFont.Provider(
+    providerAuthority = "com.google.android.gms.fonts",
+    providerPackage = "com.google.android.gms",
+    certificates = R.array.com_google_android_gms_fonts_certs
+)
+val bagelFatOneFont = GoogleFont("Bagel Fat One")
+val outfitFont = GoogleFont("Outfit")
+
 val bagelFatOneFontFamily = FontFamily(
-    Font(R.font.bagel_fat_one_regular, FontWeight.Normal)
+    Font(
+        googleFont = bagelFatOneFont,
+        fontProvider = provider,
+        weight= FontWeight.Normal
+    )
 )
 
 val outfitFontFamily = FontFamily(
-    Font(R.font.outfit, FontWeight.Normal),
-    Font(R.font.outfit, FontWeight.Medium),
-    Font(R.font.outfit, FontWeight.SemiBold)
+    Font(
+        googleFont = outfitFont,
+        fontProvider = provider,
+        weight = FontWeight.Normal
+    ),
+    Font(
+        googleFont = outfitFont,
+        fontProvider = provider,
+        weight = FontWeight.Medium
+    ),
+    Font(
+        googleFont = outfitFont,
+        fontProvider = provider,
+        weight = FontWeight.SemiBold
+    )
 )
 
 val Typography = Typography(
@@ -76,7 +101,7 @@ val Typography = Typography(
     titleMedium = TextStyle( // Derived assumption
         fontFamily = outfitFontFamily, // Uses variable font
         fontWeight = FontWeight.Medium, // Selects Medium from outfit.ttf
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
